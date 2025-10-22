@@ -1,6 +1,8 @@
-from fastapi import FastAPI
-from sqlmodel import SQLModel, create_engine, Session
+from fastapi import FastAPI, Depends
+#from pydantic import BaseModel
+from sqlmodel import SQLModel, create_engine, Session, select
 from dotenv import load_dotenv
+from models.product import Product, ProductInfo, ProductResponse
 import os
 
 load_dotenv()
@@ -17,21 +19,19 @@ def get_db():
 
 app = FastAPI()
 
-users_list = []
+@app.post("/api/users", response_model=dict, tags=["CREATE"])
+async def create_product(new_product: ProductInfo, db:Session = Depends(get_db)):
+    insert_product = Product.model_validate(new_product)
+    db.add(insert_product)
+    db.commit()
+    return {"msg":"Inserció correcta"}
 
-@app.post("/api/users", response_model=dict)
-async def create_user(new_user: str):
-    users_list.append(new_user)
-    numbers = range(len(users_list))
-    users_dic = dict(zip(numbers, users_list))
-    return users_dic
-
-@app.get("/api/users/{id}", response_model=dict)
-async def get_user_id(id: int):
-    users_dic = {}
-    users_dic[id]=users_list[id]
-    return users_dic
-
+@app.get("/api/users/{id}", response_model=ProductResponse, tags=["READ by ID"])
+async def get_user_id(id: int, db: Session = Depends(get_db)):
+    product_by_id=select(Product).where(Product.id == id)
+    result= db.exec(product_by_id).first()
+    return ProductResponse.model_validate(result)
+'''
 @app.get("/api/users", response_model=dict)
 async def get_all_users():
     numbers = range(len(users_list))
@@ -50,4 +50,5 @@ async def delete_user(id: int):
     users_list.pop(id)
     numbers = range(len(users_list))
     users_dic = dict(zip(numbers, users_list))
-    return users_dic
+    return users_dic 
+'''
