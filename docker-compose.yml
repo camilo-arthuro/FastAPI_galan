@@ -5,12 +5,12 @@ services:
    container_name: db_fastapi
    environment:
      - POSTGRES_DB=fastapi_db
-     - POSTGRES_PASSWORD=pass
-     - POSTGRES_USER=user
+     - POSTGRES_PASSWORD=passwd
+     - POSTGRES_USER=usuario
    ports:
      - "5432:5432"
-#   volumes:
-#     - local_pgdata:/var/lib/postgresql/data
+   volumes:
+     - local_pgdata:/var/lib/postgresql/data
  pgadmin:
    image: dpage/pgadmin4
    container_name: pg_fastapi
@@ -19,8 +19,8 @@ services:
    environment:
      PGADMIN_DEFAULT_EMAIL: admin@admin.com
      PGADMIN_DEFAULT_PASSWORD: admin
-#   volumes:
-#     - pgadmin-data:/var/lib/pgadmin
-#volumes:
-# local_pgdata:
-# pgadmin-data:
+   volumes:
+     - pgadmin-data:/var/lib/pgadmin
+volumes:
+ local_pgdata:
+ pgadmin-data:
