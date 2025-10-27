@@ -25,3 +25,10 @@ class ProductPartial(SQLModel):
     name: str
     price: float
     stock: int
+
+class ProductOne(SQLModel):
+    price: float
+
+class ProductTwo(SQLModel):
+    price: float
+    stock: int
