@@ -38,7 +38,7 @@ async def get_all_products(db: Session = Depends(get_db)):
     all_products = db.exec(query).all()
     return [ProductResponse.model_validate(product) for product in all_products]
 
-@app.get("/api/product/{name}", response_model=list[ProductResponse], tags=["READ by NAME"])
+@app.get("/api/product/name/{name}", response_model=list[ProductResponse], tags=["READ by NAME"])
 async def get_products_by_name(name: str, db: Session = Depends(get_db)):
     query = select(Product).where(Product.name == name)
     products_list = db.exec(query).all()
@@ -54,6 +54,7 @@ async def delete_product(id: int, db: Session = Depends(get_db)):
 
 @app.get("/api/product/{id}/partial", response_model=ProductPartial, tags=["READ PARTIALLY"])
 async def get_product_partially(id: int, db: Session = Depends(get_db)):
+    # Sensible data: supplier_email and supplier_phone
     query = select(Product).where(Product.id == id)
     result = db.exec(query).first()
     return ProductPartial.model_validate(result)
