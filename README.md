@@ -1,50 +1,71 @@
-# Activitat RA2_RA3_RA6 - FASTAPI BASICS 
+# Activitat RA2_RA3_RA6 - FASTAPI POSTGRES 
 
 ## NOM I COGNOMS: Carlos Alberto Galan Delgado 
+### Crear 6 endpoints (create, read, read by id, update by id, update parcial i delete by id) per fer les consultes a la Base de Dades en postgreSQL i mostrar les respostes de l’APIREST amb docs de FastAPI o postman.  
 
-### 1. Crear - Afegir a la list
-* Endpoint: /api/users  
+### Endpoints CRUD amb Postgresql:  
+### Ceate - Afegir un nou registre a la taula  
 * Mètode: POST  
-* Funcionalitat: Crear un nou objecte nou i afegir-lo a la list de nom users.  
-* Return: Retorna, en format diccionari, informació de tota la llista.  
+* Funcionalitat: Afegir un nou registre a la taula de la BD.  NO es demana gestionar els errors d’http.  
+* Return: Retorna un missatge com a inserció correcta.  
 
-![Crear_post](img/endpoint_crear_post.jpg)  
-![Crear_repsonse](img/endpoint_crear_response.jpg)
+![Create_post](img_postgres/create_post.jpg)
+![Create_post_response](img_postgres/create_post_code.jpg)
 
-### 2. Llegir - Consultar un usuari / objecte de la llista  
-* Endpoint: /api/users/{id}
-* Mètode: GET
-* Funcionalitat: Haurà de buscar l’usuari o objecte de la list amb el que es passi per paràmetre {id}.
-* Return: Retorna, en format diccionari, un usuari o un objecte consultat.  
+### Read - Consultar totes les dades d’un registre a la taula.  
+* Mètode: GET  
+* Funcionalitat: Haurà de buscar un registre per id. NO es demana gestionar els errors d’http.  
+* Return: Retorna en format sqlmodel adequat.  
 
-![Consultar_get_id](img/endpoint_consultar_get_id.jpg)
-![Consultar_response_id](img/endpoint_consultar_response_id.jpg) 
+![Read_by_id_get_by_id](img_postgres/read_by_id_get_by_id.jpg)
+![Read_by_id_get_by_id_code](img_postgres/read_by_id_get_by_id_code.jpg)
 
-### 3. Llegir - Consultar tots els usuaris  
-* Endpoint: /api/users
-* Mètode: GET
-* Funcionalitat: Haurà de buscar tots els usuaris o objectes de la llista.
-* Return: Retorna, en format diccionari, totes les dades de la llista.  
+### Read - Consultar totes les dades de tots els registres de la taula.  
+Quan el client faci la consulta a /api/product caldrà una resposta per part del servidor amb les dades de tots els registres de la taula. S’han d’evitar enviar dades sensibles al client. indicar amb un comentari en el mateix endpoint les dades sensibles que heu escollit.  
 
-![Consultar_get_all](img/endpoint_consultar_get_all.jpg)
-![Consultar_response_all](img/endpoint_consultar_response_all.jpg)  
+![Read_All_get_all](img_postgres/read_all_get_all.jpg)
+![Read_All_get_all_code_1](img_postgres/read_all_get_all_code_1.jpg) 
+![Read_All_get_all_code_2](img_postgres/read_all_get_all_code_2.jpg)
 
-### 4. Actualitzar - Actualització completa
-* Endpoint: /api/users/{id}
-* Mètode: PUT
-* Funcionalitat: Actualitzar un objecte (sigui una lletra o canvi sencer) de la list.
-* Return: Retorna, en format diccionari, totes les dades de la list.  
+### Read - Consultar les dades filtrant per un camp  
+Quan el client faci la consulta a /api/product/{<nom_camp>} (cal substituir <nom-camp> pel nom del camp a filtrar) caldrà una resposta per part del servidor amb les dades d’aquells registres filtrats pel nom del camp.  
 
-![Actualitzacio_put](img/endpoint_actualitzacio_put.jpg)
-![Actualitzacio_response](img/endpoint_actualitzacio_response.jpg)
-![Actualitzacio_response_get_all](img/endpoint_actualitzacio_response_get_all.jpg)  
+![Read_by_name](img_postgres/read_by_name.jpg)
+![Read_by_name_code](img_postgres/read_by_name_code.jpg)
 
-### 5. Eliminar - Esborrar usuari
-* Endpoint: /api/usuaris/{id}
-* Mètode: DELETE
-* Funcionalitat: Eliminar un usuari / objecte de la list.
-* Return: Retorna, en format diccionari, tota la llista.  
+### Delete - Eliminar un registre per id  
+Quan el client faci la consulta a /api/product/{id} caldrà tornar una resposta amb un missatge indicant que l’eliminació ha sigut exitosa.  
 
-![Esborrar_delete](img/endpoint_esborrar_delete.jpg)
-![Esborrar_response](img/endpoint_esborrar_response.jpg)
-![Esborrar_response_get_all](img/endpoint_esborrar_response_get_all.jpg)  
+![Delete_by_id](img_postgres/delete_by_id.jpg)
+![Delete_by_id_code](img_postgres/delete_by_id_code.jpg)
+![Get_all_no_id_3](img_postgres/get_all_no_id_3.jpg)
+
+### Read - Lectura parcial  
+El client demana poder mostrar unes dades d’un producte. Les dades han de ser 3 camps (escollit per l’alumnat). Cal tenir en compte que 2 camps son sensibles i no es poden retornar en aquest endpoint.  
+
+![Read_partially](img_postgres/read_partially.jpg)
+![Read_partially_code](img_postgres/read_partially_code.jpg)  
+
+### Update - Modificació total (PUT)  
+El client vol tenir la opció de modificar totes les dades d’un producte. Cal pensar si l’id es pot modificar o no des del client.  
+
+![Update_total](img_postgres/update_total.jpg)
+![Update_total_code](img_postgres/update_total_code.jpg)  
+* Abans  
+![Update_total_before](img_postgres/update_total_before_id_5.jpg)  
+* Després  
+![Update_total_after](img_postgres/update_total_after_id_5.jpg)  
+
+### Update - Modificació parcial un camp (PATCH)  
+El client vol tenir la opció, també, de poder modificar només un camp d’un registre de la taula producte (podeu escollir vosaltres un).  
+
+![Patch_one](img_postgres/patch_one.jpg)  
+![Patch_one_code](img_postgres/patch_one_code.jpg)  
+![Patch_one_get_id](img_postgres/patch_one_get_id.jpg)  
+
+### Update - Modificació parcial dos camps  
+El client vol tenir la opció, també, de poder modificar només dos camps d’un registre de la taula producte (podeu escollir vosaltres).  
+
+![Patch_two](img_postgres/patch_two.jpg)
+![Patch_two_code](img_postgres/patch_two_code.jpg)  
+![Patch_two_get_id](img_postgres/patch_two_get_id.jpg)
